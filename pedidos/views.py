@@ -28,3 +28,26 @@ def pedidos_todos(request):
     )
     data = list(pedidos)
     return JsonResponse(data, safe=False)
+
+def pedidos_lista(request):
+    """
+    Vista amigable que muestra todos los pedidos en una tabla HTML.
+    """
+    estado_filtro = request.GET.get("estado")
+    search_query = request.GET.get("search")
+        
+    pedidos = Pedido.objects.all().order_by("-fecha_creacion")
+    
+    if estado_filtro and estado_filtro != "TODOS":
+        pedidos = pedidos.filter(estado = estado_filtro)
+        
+    if search_query:
+        pedidos = pedidos.filter(cliente__icontains=search_query) | pedidos.filter(id__icontains=search_query)
+        
+    estados = ["TODOS"] + [e[0] for e in Pedido.ESTADOS]
+        
+    
+    
+    return render(request, 
+                  "pedidos/lista_pedidos.html", 
+                  {"pedidos": pedidos, "estados": estados, "estado_filtro": estado_filtro or "TODOS", "search_query": search_query or ""})
