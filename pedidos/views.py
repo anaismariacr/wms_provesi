@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Pedido
+from django.utils import timezone
 
 def pedidos_pendientes(request):
     """
@@ -33,6 +34,24 @@ def pedidos_lista(request):
     """
     Vista amigable que muestra todos los pedidos en una tabla HTML.
     """
+    
+    if request.method == "POST":
+        id_pedido = request.POST.get("id")
+        cliente = request.POST.get("cliente")
+        total = request.POST.get("total")
+        estado = request.POST.get("estado")
+        
+        if id_pedido and cliente and total:
+            Pedido.objects.create(
+                id=id_pedido,
+                cliente=cliente,
+                total=total,
+                estado=estado or "PENDIENTE",
+                fecha_creacion=timezone.now(),
+            )
+            
+        return redirect("pedidos_lista")
+    
     estado_filtro = request.GET.get("estado")
     search_query = request.GET.get("search")
         
