@@ -58,6 +58,29 @@
 <body>
     <h1>Lista de Pedidos</h1>
 
+    <form method="post" action="{% url 'pedidos_lista' %}">
+        {% csrf_token %}
+        <label for="id">ID Pedido:</label>
+        <input type="text" id="id" name="id" required>
+
+        <label for="cliente">Cliente:</label>
+        <input type="text" id="cliente" name="cliente" required>
+
+        <label for="total">Total:</label>
+        <input type="number" id="total" name="total" step="0.01" required>
+
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado">
+            {% for e in estados %}
+                {% if e != "TODOS" %}
+                    <option value="{{ e }}">{{ e|title }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button type="submit">Registrar Pedido</button>
+    </form>
+
+
     <form method="get">
         <label for="estado">Estado:</label>
         <select name="estado" id="estado">
