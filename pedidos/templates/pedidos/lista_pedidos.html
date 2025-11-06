@@ -58,29 +58,6 @@
 <body>
     <h1>Lista de Pedidos</h1>
 
-    <form method="post" action="{% url 'pedidos_lista' %}">
-        {% csrf_token %}
-        <label for="id">ID Pedido:</label>
-        <input type="text" id="id" name="id" required>
-
-        <label for="cliente">Cliente:</label>
-        <input type="text" id="cliente" name="cliente" required>
-
-        <label for="total">Total:</label>
-        <input type="number" id="total" name="total" step="0.01" required>
-
-        <label for="estado">Estado:</label>
-        <select name="estado" id="estado">
-            {% for e in estados %}
-                {% if e != "TODOS" %}
-                    <option value="{{ e }}">{{ e|title }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <button type="submit">Registrar Pedido</button>
-    </form>
-
-
     <form method="get">
         <label for="estado">Estado:</label>
         <select name="estado" id="estado">
@@ -113,7 +90,21 @@
             <tr>
                 <td>{{ pedido.id }}</td>
                 <td>{{ pedido.cliente }}</td>
-                <td class="estado">{{ pedido.estado }}</td>
+                <td>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                        <select name="estado" onchange="this.form.submit()">
+                            {% for e in estados %}
+                                {% if e != 'TODOS' %}
+                                    <option value="{{ e }}" {% if pedido.estado == e %}selected{% endif %}>
+                                        {{ e|title }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
                 <td>${{ pedido.total }}</td>
                 <td>{{ pedido.fecha_creacion|date:"Y-m-d H:i" }}</td>
                 <td>{{ pedido.fecha_entrega|default:"-" }}</td>

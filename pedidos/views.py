@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Pedido
 from django.utils import timezone
@@ -36,21 +36,22 @@ def pedidos_lista(request):
     """
     
     if request.method == "POST":
-        id_pedido = request.POST.get("id")
-        cliente = request.POST.get("cliente")
-        total = request.POST.get("total")
-        estado = request.POST.get("estado")
+        pedido_id = request.POST.get("pedido_id")
+        nuevo_estado = request.POST.get("estado")
         
-        if id_pedido and cliente and total:
-            Pedido.objects.create(
-                id=id_pedido,
-                cliente=cliente,
-                total=total,
-                estado=estado or "PENDIENTE",
-                fecha_creacion=timezone.now(),
-            )
+        if pedido_id and nuevo_estado:
+            pedido = get_object_or_404(Pedido, pk=pedido_id)
+            pedido.estado = nuevo_estado
             
-        return redirect("pedidos_lista")
+            if nuevo_estado == "ENTREGADO":
+                pedido.fecha_entrega = timezone.now().date()
+                
+            else:
+                pedido.fecha_entrega = None
+                
+            pedido.save()
+            
+        return redirect("pedidos_lista")    
     
     estado_filtro = request.GET.get("estado")
     search_query = request.GET.get("search")
