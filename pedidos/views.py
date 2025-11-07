@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Pedido
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
 def pedidos_pendientes(request):
     """
