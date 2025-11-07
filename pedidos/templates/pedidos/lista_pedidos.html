@@ -23,14 +23,14 @@
         }
         button {
             padding: 8px 12px;
-            background-color: #4CAF50;
+            background-color: #1d6ba6;
             border: none;
             color: white;
             border-radius: 4px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #1d6ba6;
         }
         table {
             width: 100%;
@@ -44,7 +44,7 @@
             text-align: left;
         }
         th {
-            background-color: #4CAF50;
+            background-color: #1d6ba6;
             color: white;
         }
         tr:hover {
@@ -90,7 +90,21 @@
             <tr>
                 <td>{{ pedido.id }}</td>
                 <td>{{ pedido.cliente }}</td>
-                <td class="estado">{{ pedido.estado }}</td>
+                <td>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                        <select name="estado" onchange="this.form.submit()">
+                            {% for e in estados %}
+                                {% if e != 'TODOS' %}
+                                    <option value="{{ e }}" {% if pedido.estado == e %}selected{% endif %}>
+                                        {{ e|title }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
                 <td>${{ pedido.total }}</td>
                 <td>{{ pedido.fecha_creacion|date:"Y-m-d H:i" }}</td>
                 <td>{{ pedido.fecha_entrega|default:"-" }}</td>
