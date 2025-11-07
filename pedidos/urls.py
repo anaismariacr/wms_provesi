@@ -1,8 +1,17 @@
-from django.urls import path
-from . import views
+
+
+from django.contrib import admin
+from django.urls import path, include
+from . import views  # importa la vista que acabas de crear
 
 urlpatterns = [
-    path("pendientes/", views.pedidos_pendientes, name="pedidos_pendientes"),
-    path("todos/", views.pedidos_todos, name="todos_pedidos"),
-    path("", views.pedidos_lista, name="pedidos_lista"),
+    path('admin/', admin.site.urls),
+
+    # apps secundarias (siguen funcionando si las necesitas)
+    path('measurements/', include('measurements.urls')),
+    path('variables/', include('variables.urls')),
+    path('pedidos/', include('pedidos.urls')),
+
+    # NUEVO: front principal → renderiza lista_pedidos.html
+    path('', views.home, name='home'),
 ]
