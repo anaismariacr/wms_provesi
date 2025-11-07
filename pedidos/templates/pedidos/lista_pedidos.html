@@ -63,9 +63,10 @@
                             <form method="post" action="{% url 'actualizar_estado_pedido' pedido.id %}">
                                 {% csrf_token %}
                                 <select name="estado" class="form-select form-select-sm estado-select">
-                                    {% for codigo, label in estados %}
+                                    {# estados es una lista de strings: 'pendiente', 'en_proceso', etc. #}
+                                    {% for codigo in estados %}
                                         <option value="{{ codigo }}" {% if pedido.estado == codigo %}selected{% endif %}>
-                                            {{ label }}
+                                            {{ codigo|capfirst }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -86,7 +87,7 @@
         {% endif %}
     </div>
 
-    <!-- Refresca automáticamente cada 10 segundos -->
+    <!-- Refresca automáticamente cada 10 segundos para ver cambios hechos en otras instancias -->
     <script>
         setInterval(function () {
             window.location.reload();
