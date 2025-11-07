@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from .models import Pedido
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 def pedidos_pendientes(request):
     """
@@ -31,6 +32,7 @@ def pedidos_todos(request):
     data = list(pedidos)
     return JsonResponse(data, safe=False)
     
+@csrf_exempt     
 @require_POST
 def actualizar_estado_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
