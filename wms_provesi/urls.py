@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+from django.http import HttpResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pedidos/', include('pedidos.urls')),
+    path('health-check/', health_check),
 ]
