@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Pedido
+from django.utils import timezone
 
 def pedidos_pendientes(request):
     """
@@ -33,6 +34,25 @@ def pedidos_lista(request):
     """
     Vista amigable que muestra todos los pedidos en una tabla HTML.
     """
+    
+    if request.method == "POST":
+        pedido_id = request.POST.get("pedido_id")
+        nuevo_estado = request.POST.get("estado")
+        
+        if pedido_id and nuevo_estado:
+            pedido = get_object_or_404(Pedido, pk=pedido_id)
+            pedido.estado = nuevo_estado
+            
+            if nuevo_estado == "ENTREGADO":
+                pedido.fecha_entrega = timezone.now().date()
+                
+            else:
+                pedido.fecha_entrega = None
+                
+            pedido.save()
+            
+        return redirect("pedidos_lista")    
+    
     estado_filtro = request.GET.get("estado")
     search_query = request.GET.get("search")
         
