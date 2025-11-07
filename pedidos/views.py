@@ -29,7 +29,20 @@ def pedidos_todos(request):
     )
     data = list(pedidos)
     return JsonResponse(data, safe=False)
+    
+@require_POST
+def actualizar_estado_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    nuevo_estado = request.POST.get('estado')
 
+    # Si tienes choices definidos en el modelo, mejor validar contra ellos:
+    # if nuevo_estado in dict(Pedido.ESTADOS).keys():
+    if nuevo_estado:
+        pedido.estado = nuevo_estado
+        pedido.save()
+
+    # Vuelves a la lista de pedidos
+    return redirect('pedidos_lista')
 def pedidos_lista(request):
     """
     Vista amigable que muestra todos los pedidos en una tabla HTML.
