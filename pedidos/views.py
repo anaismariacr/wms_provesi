@@ -3,6 +3,9 @@ from django.http import JsonResponse
 from .models import Pedido
 from django.utils import timezone
 
+def home(request):
+    return render(request, 'pedidos/lista_pedidos.html')
+
 def pedidos_pendientes(request):
     """
     Vista para consultar los pedidos con estado 'PENDIENTE'.
