@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f4f8;
+        }
+        h1 {
+            color: #333;
+        }
+        .buttons {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 20px;
+        }
+        a.button {
+            text-decoration: none;
+            background: #1d6ba6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+        a.button:hover {
+            background: #012f5fff;
+        }
+    </style>
+</head>
+</head>
+<body>
+    <h1>Bienvenido a Provesi WMS</h1>
+    <div class="buttons">
+        <!-- These URLs will point to your Auth0 login route and your Django order list view -->
+        <a href="" class="button">Login</a>
+        <a href="{% url 'pedidos_lista' %}" class="button">Ver pedidos</a>
+    </div>
+
+    <footer>© 2025 Arquisoft - Grupo 7</footer>
+</body>
+</html>
