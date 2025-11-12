@@ -71,3 +71,7 @@ def pedidos_lista(request):
     return render(request, 
                   "pedidos/lista_pedidos.html", 
                   {"pedidos": pedidos, "estados": estados, "estado_filtro": estado_filtro or "TODOS", "search_query": search_query or ""})
+    
+def home(request):
+    "Vista para hacer login y acceder a pagina de pedidos"
+    return render(request, 'home.html')
