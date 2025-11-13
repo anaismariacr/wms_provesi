@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pedidos',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "/login/auth0"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "https://dev-crd11vl1oinuq0de.us.auth0.com/v2/logout?returnTo=http%3A%2F%2F54.84.79.242:8080"
+
+SOCIAL_AUTH_TRAILING_SLASH = False
+SOCIAL_AUTH_AUTH0_DOMAIN = 'dev-crd11vl1oinuq0de.us.auth0.com'
+SOCIAL_AUTH_AUTH0_KEY = '0BmqDQd2ODiq22su70am9YIkSekxDZQH'
+SOCIAL_AUTH_AUTH0_SECRET = 'sR8h7OsNzh5esVjSQCc2ukjVW_TAoHKITET4C5dXSi3qcrxbIU80APLUIAIysfiS'
+SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid', 'profile', 'email', 'role',
+]
+
+AUTHENTICATION_BACKENDS = {
+    'wms_provesi.auth0backend.Auth0',
+    'django.contrib.auth.backends.ModelBackend',
+}

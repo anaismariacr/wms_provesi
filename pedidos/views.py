@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Pedido
 from django.utils import timezone
+from wms_provesi.auth0backend import getRole
 
 def pedidos_pendientes(request):
     """
@@ -34,6 +35,9 @@ def pedidos_lista(request):
     """
     Vista amigable que muestra todos los pedidos en una tabla HTML.
     """
+    role = getRole(request)
+    if role != "Operario Bodega":
+        return render(request, "sin_permiso.html")
     
     if request.method == "POST":
         pedido_id = request.POST.get("pedido_id")
