@@ -1,5 +1,8 @@
-from django.urls import path
-from . import views
+
+
+from django.contrib import admin
+from django.urls import path, include
+from . import views  # importa la vista que acabas de crear
 
 urlpatterns = [
     path("pendientes/", views.pedidos_pendientes, name="pedidos_pendientes"),
